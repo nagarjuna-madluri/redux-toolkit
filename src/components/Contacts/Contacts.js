@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 import "./Contacts.css";
 import contactsInitialState from "../../data/contacts";
-
+import "../../store";
 function Contacts() {
   return (
     <div className="container">
@@ -12,11 +12,19 @@ function Contacts() {
           <summary>New Contact</summary>
 
           <div className="form-group">
-            <input type="text" placeholder="First Name" className="form-control" />
+            <input
+              type="text"
+              placeholder="First Name"
+              className="form-control"
+            />
           </div>
 
           <div className="form-group">
-            <input type="text" placeholder="Last Name" className="form-control" />
+            <input
+              type="text"
+              placeholder="Last Name"
+              className="form-control"
+            />
           </div>
 
           <div className="form-group">
@@ -45,21 +53,23 @@ function Contacts() {
           </thead>
 
           <tbody>
-            {contactsInitialState.map((contact, index) => <tr key={contact.id}>
-              <td>{index + 1}</td>
-              <td>{contact.firstName}</td>
-              <td>{contact.lastName}</td>
-              <td>{contact.email}</td>
-              <td>{contact.phone}</td>
-              <td>
-                <button className="button button-red">Delete</button>
-              </td>
-            </tr>)}
+            {contactsInitialState.map((contact, index) => (
+              <tr key={contact.id}>
+                <td>{index + 1}</td>
+                <td>{contact.firstName}</td>
+                <td>{contact.lastName}</td>
+                <td>{contact.email}</td>
+                <td>{contact.phone}</td>
+                <td>
+                  <button className="button button-red">Delete</button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
     </div>
-  )
+  );
 }
 
 export default Contacts;
