@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./Contacts.css";
 import "../../store";
 import { useSelector, useDispatch } from "react-redux";
-import contactsSlice from "../../slices/contacts";
+import { add, remove, update } from "../../slices/contacts";
 import { v1 as uuid } from "uuid";
 function Contacts() {
   let [firstName, setFirstName] = useState("");
@@ -11,13 +11,19 @@ function Contacts() {
   let [phone, setPhone] = useState("");
   let contacts = useSelector((state) => state.contacts);
 
+  let [editId, setEditId] = useState("");
+  let [editFirstName, setEditFirstName] = useState("");
+  let [editLastName, setEditLastName] = useState("");
+  let [editEmail, setEditEmail] = useState("");
+  let [editPhone, setEditPhone] = useState("");
+
   /* Dipatch used to carry the actions to redcers */
   let dispatch = useDispatch();
 
   /* Add the contacts using the dispatch */
   let onAddClick = () => {
     dispatch(
-      contactsSlice.actions.add({
+      add({
         id: uuid(),
         firstName,
         lastName,
@@ -31,10 +37,36 @@ function Contacts() {
     setPhone("");
   };
 
+  let onEditClick = (contacts) => {
+    setEditId(contacts.id);
+    setEditFirstName(contacts.firstName);
+    setEditLastName(contacts.lastName);
+    setEditEmail(contacts.email);
+    setEditPhone(contacts.phone);
+  };
+
+  let onUpdateClick = () => {
+    dispatch(
+      update({
+        id: editId,
+        firstName: editFirstName,
+        lastName: editLastName,
+        email: editEmail,
+        phone: editPhone,
+      })
+    );
+
+    setEditId("");
+    setEditFirstName("");
+    setEditLastName("");
+    setEditEmail("");
+    setEditPhone("");
+  };
+
   /* Delete the contacts using the dispatch */
   let onDeleteClick = (contact) => {
     if (window.confirm("Are you sure you want to Delete contact ?")) {
-      dispatch(contactsSlice.actions.remove(contact.id));
+      dispatch(remove(contact.id));
     }
   };
   return (
@@ -108,11 +140,75 @@ function Contacts() {
             {contacts.map((contact, index) => (
               <tr key={contact.id}>
                 <td>{index + 1}</td>
-                <td>{contact.firstName}</td>
-                <td>{contact.lastName}</td>
-                <td>{contact.email}</td>
-                <td>{contact.phone}</td>
                 <td>
+                  {editId === contact.id ? (
+                    <input
+                      type="text"
+                      value={editFirstName}
+                      onChange={(event) => setEditFirstName(event.target.value)}
+                      className="form-control"
+                    />
+                  ) : (
+                    contact.firstName
+                  )}
+                </td>
+                <td>
+                  {editId === contact.id ? (
+                    <input
+                      type="text"
+                      value={editLastName}
+                      onChange={(event) => setEditLastName(event.target.value)}
+                      className="form-control"
+                    />
+                  ) : (
+                    contact.lastName
+                  )}
+                </td>
+                <td>
+                  {editId === contact.id ? (
+                    <input
+                      type="text"
+                      value={editEmail}
+                      onChange={(event) => setEditEmail(event.target.value)}
+                      className="form-control"
+                    />
+                  ) : (
+                    contact.email
+                  )}
+                </td>
+                <td>
+                  {editId === contact.id ? (
+                    <input
+                      type="text"
+                      value={editPhone}
+                      onChange={(event) => setEditPhone(event.target.value)}
+                      className="form-control"
+                    />
+                  ) : (
+                    contact.phone
+                  )}
+                </td>
+                <td>
+                  {editId === contact.id ? (
+                    <button
+                      className="button button-green"
+                      onClick={() => {
+                        onUpdateClick();
+                      }}
+                    >
+                      Update
+                    </button>
+                  ) : (
+                    <button
+                      className="button button-green"
+                      onClick={() => {
+                        onEditClick(contact);
+                      }}
+                    >
+                      Edit
+                    </button>
+                  )}
+
                   <button
                     className="button button-red"
                     onClick={() => {
