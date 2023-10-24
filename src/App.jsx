@@ -1,8 +1,12 @@
 import React from "react";
-import {Contacts} from "./components";
+import { Contacts } from "./components";
+import { Provider } from "react-redux";
+import store from "./store";
 let App = () => {
-    return(
-        <Contacts />
-    )
+  return (
+    <Provider store={store}>
+      <Contacts />
+    </Provider>
+  );
 };
 export default App;

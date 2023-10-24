@@ -2,7 +2,10 @@ import React from "react";
 import "./Contacts.css";
 import contactsInitialState from "../../data/contacts";
 import "../../store";
+import { useSelector } from "react-redux";
+
 function Contacts() {
+  let contacts = useSelector((state) => state.contacts);
   return (
     <div className="container">
       <h4 className="grid-header">Contacts</h4>
@@ -53,7 +56,7 @@ function Contacts() {
           </thead>
 
           <tbody>
-            {contactsInitialState.map((contact, index) => (
+            {contacts.map((contact, index) => (
               <tr key={contact.id}>
                 <td>{index + 1}</td>
                 <td>{contact.firstName}</td>
